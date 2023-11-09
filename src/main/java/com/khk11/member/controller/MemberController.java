@@ -1,4 +1,4 @@
-package com.khk11.board.controller;
+package com.khk11.member.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;

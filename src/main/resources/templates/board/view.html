@@ -7,7 +7,7 @@
     <form method="get" action="" th:action="@{/board/write}" th:object="${boardDto}">
         <div class="mb-3">
             <label for="exampleFormControlInput1" class="form-label">title</label>
-            <input type="text" class="form-control" id="title" name="title" placeholder="제목">
+            <input type="text" class="form-control" id="title" name="title" placeholder="제목" value="">
           <!-- // <p th:if="${#fields.hasErrors('title')}" th:errors="*{title}" th:v>오류메세지</p>-->
         </div>
         <div class="mb-3">

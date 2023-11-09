@@ -14,8 +14,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Controller
 @Slf4j
@@ -71,10 +70,10 @@ public class BoardController {
                     msg("글이 입력되었습니다.").build();
             redirectAttributes.addFlashAttribute("modalDto",modalDto);
         }
-       /* redirectAttributes.addAttribute("name","김혁기");
-        redirectAttributes.addFlashAttribute("name",boardDto.getName());
-        redirectAttributes.addAttribute("age",30);*/
         return "redirect:/";
+      // redirectAttributes.addAttribute("name","김혁기");
+       /* redirectAttributes.addFlashAttribute("name",boardDto.getName());
+        redirectAttributes.addAttribute("age",30);*/
         // 새로고침을 한경우 값을 보내 redirect:"/?name=김혁기";
         //RedirectAttributes을 이용해서 값을 보낼 수도 있다.
      /*   if (boardDto.getTitle().isEmpty() && boardDto.getName().isEmpty()&&boardDto.getContent().isEmpty()){
@@ -88,9 +87,31 @@ public class BoardController {
 
     }
     @GetMapping("/view/{id}")
-    public String getOneBoard(@PathVariable int id){
-        log.info("dasd",id);
-        boardService.getOneBoard(id);
-        return "/board/view";
+    @ResponseBody
+    public Map<String, Object> getOneBoard(@PathVariable int id) {
+        log.info("getOneBoard==={}",id);
+        BoardDto boardDto = boardService.getOneBoard(id);
+        Map<String, Object> resultMap = new HashMap<>();
+        if(boardDto!=null){
+            resultMap.put("isState","ok");
+            resultMap.put("viewData",boardDto);
+        } else {
+            resultMap.put("isState", "fail");
+            resultMap.put("viewData",null);
+        }
+        return  resultMap;
+    }
+    @DeleteMapping("/delete/{id}")
+    @ResponseBody  //글자를 리턴합니다. 파일을 찾지않고
+    public Map<String,String> deleteBoard(@PathVariable int id){
+        log.info("ajax으로 넘어온 id==={}",id);
+        int reuslt = boardService.deleteBoard(id);
+        Map<String,String> resultMap = new HashMap<>();
+        if(reuslt>0){
+        resultMap.put("isDelete","ok");
+        }else {
+        resultMap.put("isDelete","fail");
+        }
+        return resultMap;
     }
 }

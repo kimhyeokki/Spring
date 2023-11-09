@@ -18,6 +18,7 @@ public class BoardDto {
 
 
     private int id;
+
     @NotEmpty(message = "이름은 필수입력사항입니다.")
     private String name;
 

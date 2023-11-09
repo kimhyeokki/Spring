@@ -5,5 +5,6 @@
 <configuration>
    <typeAliases>
       <typeAlias alias="BoardDto" type="com.khk11.board.dto.BoardDto"></typeAlias>
+      <typeAlias alias="MemberDto" type="com.khk11.member.dto.MemberDto"></typeAlias>
    </typeAliases>
 </configuration>

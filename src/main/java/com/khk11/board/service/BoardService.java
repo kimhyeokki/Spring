@@ -32,4 +32,9 @@ public class BoardService {
         boardDto = boardDao.getOneBoard(id);
         return boardDto;
     }
+    public int deleteBoard(int id){
+        int result=0;
+        result=boardDao.deleteBoard(id);
+        return result;
+    }
 }
