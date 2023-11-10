@@ -19,7 +19,7 @@
             </thead>
             <tbody>
             <tr th:each="boardItem,status :${boardList}">
-                <th scope="row" th:text="${status.count}">1</th>
+                <th scope="row" th:text="${pageMaker.total -( status.count+(pageMaker.criteria.pageSize*(pageMaker.criteria.currentPage-1)))}">1</th>
                 <td>
                     <a th:text="${boardItem.title}" href=""
                        th:href="@{/board/view/{id}(id=${boardItem.id})}"
@@ -42,6 +42,47 @@
         <div class="mt-5">
             <a href="" class="btn btn-primary" th:href="@{/board/write}">write</a>
         </div>
+        <div class="container mt-5" >
+            <form action="" th:action="@{/board/list}" method="get">
+                <div class="row">
+                    <div class="col-4" th:with="category=${param.category}">
+                <select class="form-select" aria-label="Default select example" name="category">
+                    <option value="title" th:selected="${#strings.equals(category,'title') ?true:false}">제목</option>
+                    <option value="name" th:selected="${#strings.equals(category,'name') ?true:false}">이름</option>
+                    <option value="content" th:selected="${#strings.equals(category,'content') ?true:false}">내용</option>
+                    <option value="all" th:selected="${#strings.equals(category,'all') ?true:false}">전체</option>
+                </select>
+                    </div>
+                    <div class="col-6">
+                    <input type="text" class="form-control" name="searchTxt" th:value="${param.searchTxt}">
+                    </div>
+                    <div class="col-2">
+                <button class="btn btn-primary">검색</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                <li class="page-item">
+                    <a class="page-link" href="#" th:href="@{/board/list(currentPage=${pageMaker.criteria.currentPage}-1)}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                <li class="page-item"
+                    th:each="pageNum:${#numbers.sequence(pageMaker.startPage,pageMaker.endPage)}"
+                    th:classappend="${pageMaker.criteria.currentPage==pageNum ?'active':''}"
+                >
+                    <a class="page-link" href="" th:text="${pageNum}" th:href="@{/board/list(currentPage=${pageNum})}">1</a>
+                </li>
+
+                <li class="page-item">
+                    <a class="page-link" href="#" th:href="@{/board/list(currentPage=${pageMaker.criteria.currentPage}+1)}" aria-label="Next" >
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
     </div>
     <div class="modal" tabindex="-1" id="viewModal">
         <div class="modal-dialog">
@@ -65,68 +106,69 @@
     </div>
     <script>
 
-        const viewModal = new bootstrap.Modal("#viewModal");
+  const viewModal = new bootstrap.Modal("#viewModal");
 
-      $(".btnView").on("click",function(e){
-          e.preventDefault();    <!--궁긍한 내용 다시 알아보자-->
-          const idx = $(this).data("idx");
-          $.ajax({
-              url:`/board/view/${idx}`,
-              success:function(data){
-                    console.log(data);
-                  if(data.isState==="ok") {
-                      viewModal.show();
-                      $("#viewModal .modal-title").text(data.viewData.title);
-                      $("#viewModal .modal-body .name").text(data.viewData.name);
-                      $("#viewModal .modal-body .regdate").text(data.viewData.regdate);
-                      $("#viewModal .modal-body .content").text(data.viewData.content);
+    /*     $(".btnView").on("click",function(e){
+            e.preventDefault();
+            const idx = $(this).data("idx");
+            $.ajax({
+                url:`/board/view/${idx}`,
+                success:function(data){
+                      console.log(data);
+                    if(data.isState==="ok") {
+                        viewModal.show();
+                        $("#viewModal .modal-title").text(data.viewData.title);
+                        $("#viewModal .modal-body .name").text(data.viewData.name);
+                        $("#viewModal .modal-body .regdate").text(data.viewData.regdate);
+                        $("#viewModal .modal-body .content").text(data.viewData.content);
 
 
-                      $("#viewModal .modal-footer .btn-danger").on("click",function(){
-                            const idx = data.viewData.id;
-                             console.log(idx);
-                             const tr = $(".btnDelete").parent().parent();
-                             console.log(tr);
-                         $.ajax({
-                            url:`/board/delete/${idx}`,
-                            method:"delete",
-                            success:function(data){
-                            console.log(data);
-                             if(data.isDelete==="ok"){
-                                viewModal.hide();
-                                tr.remove();
-                            }
-                             }
+                        $("#viewModal .modal-footer .btn-danger").on("click",function(){
+                              const idx = data.viewData.id;
+                               console.log(idx);
+                               const tr = $(".btnDelete").parent().parent();
+                               console.log(tr);
+                           $.ajax({
+                              url:`/board/delete/${idx}`,
+                              method:"delete",
+                              success:function(data){
+                              console.log(data);
+                               if(data.isDelete==="ok"){
+                                  viewModal.hide();
+                                  tr.remove();
+                              }
+                               }
+                          })
                         })
-                      })
-                  }
-              }
-          })
-          console.log(idx);
-          return false;
-
-      })
+                    }
+                }
+            })
+            console.log(idx);
+            return false;
+        })*/
 
 
 
 
-     $(".btn").on("click",function(){
-         console.log($(this).data("idx"));
-         const tr = $(this).parent().parent();
-     <!--const tr = $(this).closest("tr");-->
-         const idx = $(this).data("idx");
-         $.ajax(
-              {
-              url:`/board/delete/${idx}`,
-               method:"delete",
-              success:function(data){
-              console.log(data);
-              if(data.isDelete==="ok"){
-                 tr.remove();
-              }
-              }
-         })
-     })
+
+
+       $(".btn").on("click",function(){
+           console.log($(this).data("idx"));
+           const tr = $(this).parent().parent();
+       <!--const tr = $(this).closest("tr");-->
+           const idx = $(this).data("idx");
+           $.ajax(
+                {
+                url:`/board/delete/${idx}`,
+                 method:"delete",
+                success:function(data){
+                console.log(data);
+                if(data.isDelete==="ok"){
+                   tr.remove();
+                }
+                }
+           })
+       })
     </script>
 
 </div>

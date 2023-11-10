@@ -3,8 +3,34 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.khk11.board.dao.BoardDao">
-    <select id="getAllBoard" resultType="BoardDto">
-        select * from board
+    <sql id="search">
+        <!--동적쿼리-->
+        <if test="category !=null and searchTxt !=null">
+            <choose>
+                <when test="category=='title'">
+                    where title like '%' || #{searchTxt} || '%'
+                </when>
+                <when test="category=='name'">
+                    where name like '%' || #{searchTxt} || '%'
+                </when>
+                <when test="category=='content'">
+                    where content like '%' || #{searchTxt} || '%'
+                </when>
+                <when test="category=='all'">
+                    where (content like '%' || #{searchTxt} || '%') or
+                    (name like '%' || #{searchTxt} || '%' )or
+                    (title like '%' || #{searchTxt} || '%')
+                </when>
+            </choose>
+        </if>
+    </sql>  <!---->
+    <select id="getAllBoard" parameterType="Criteria" resultType="BoardDto">
+       <!-- select * from board-->
+      <!--  <include refid="search"></include>-->
+        select * from (
+        select rownum as num, b.* from
+        (select * from board order by regdate desc) b
+        ) where num <![CDATA[>=]]> #{startPage} and num <![CDATA[<=]]> #{endPage}
     </select>
     <insert id="insertBoard" parameterType="BoardDto">
         insert into board values(board_seq.nextval,#{name},#{title},#{content},sysdate)
@@ -15,4 +41,11 @@
     <delete id="deleteBoard" parameterType="int">
         delete from board where id = #{id}
     </delete>
+    <update id="modifyBoard" parameterType="BoardDto">
+        update board set title=#{title}, name=#{name}, content=#{content} where id=#{id}
+    </update>
+    <select id="getTotalCount" resultType="int">
+        select count(*) as count from board
+    </select>
+
 </mapper>

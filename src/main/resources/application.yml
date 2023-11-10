@@ -10,6 +10,8 @@ spring:
       enabled: true
     restart:
       enabled: true
+    thymeleaf:
+      cache: false
 
   #### database ??
   datasource:

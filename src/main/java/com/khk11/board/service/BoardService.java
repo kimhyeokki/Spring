@@ -2,10 +2,12 @@ package com.khk11.board.service;
 
 import com.khk11.board.dao.BoardDao;
 import com.khk11.board.dto.BoardDto;
+import com.khk11.board.dto.Criteria;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 @Service
 @Slf4j
@@ -18,8 +20,19 @@ public class BoardService {
     private final BoardDao boardDao;
 
 
-    public List<BoardDto> getAllBoard(){
-        List<BoardDto> boardList = boardDao.getAllBoard();
+   /* public List<BoardDto> getAllBoard(String category, String searchTxt){
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("category",category);
+        map.put("searchTxt",searchTxt);
+        List<BoardDto> boardList = boardDao.getAllBoard(map);
+        return boardList;
+    }*/
+
+    public List<BoardDto> getAllBoard(Criteria criteria){
+        /*HashMap<String, Object> map = new HashMap<>();
+        map.put("category",category);
+        map.put("searchTxt",searchTxt);*/
+        List<BoardDto> boardList = boardDao.getAllBoard(criteria);
         return boardList;
     }
     public  int insertBoard(BoardDto boardDto){
@@ -36,5 +49,14 @@ public class BoardService {
         int result=0;
         result=boardDao.deleteBoard(id);
         return result;
+    }
+
+    public int modifyBoard(BoardDto boardDto) {
+         int result =   boardDao.modifyBoard(boardDto);
+        return result;
+    }
+    public int getTotalCount(){
+        int count = boardDao.getTotalCount();
+        return count;
     }
 }

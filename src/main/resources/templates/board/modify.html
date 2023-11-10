@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}"
+>
+<div layout:fragment="content" class="main">
+    <h2>글쓰기</h2>
+
+    <form method="post" action="" th:action="@{/board/modify}" th:object="${boardDto}">
+        <div class="mb-3">
+            <label for="exampleFormControlInput1" class="form-label">title</label>
+            <input type="text" class="form-control" id="title" name="title" placeholder="제목" th:field="*{title}">
+            <p th:if="${#fields.hasErrors('title')}" th:errors="*{title}">오류메세지</p>
+        </div>
+        <div class="mb-3">
+            <label for="exampleFormControlTextarea1" class="form-label">name</label>
+            <input type="text" class="form-control" th:field="*{name}" ></input>
+            <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="error">오류</p>
+        </div>
+        <div class="mb-3">
+            <label for="exampleFormControlTextarea1" class="form-label">content</label>
+            <textarea type="text" class="form-control" id="content" name="content" rows="5" th:field="*{content}"></textarea>
+            <p th:if="${#fields.hasErrors('content')}" th:errors="*{content}" class="error">오류</p>
+        </div>
+        <input type="hidden" th:field="*{id}">
+        <div class="mt-5">
+            <button class="btn btn-primary"> 확인 </button>
+        </div>
+    </form>
+</div>
+</html>

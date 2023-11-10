@@ -15,6 +15,7 @@
             <li class="ms-3"><a class="text-body-secondary" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#facebook"></use></svg></a></li>
         </ul>
     </footer>
+    <th:block th:if="${modalDto!=null}">
     <div class="modal fade" tabindex="-1" id="myModal">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -34,11 +35,12 @@
     </div>
     <!--타임리프에서 자바 스크립트에 서버에서 내려준 변수를 사용하고 싶으면 -->
     <script th:inline="javascript">
-        const isState = [[${modal.isState}]];
+        const isState = [[${modalDto.isState}]];
         const myModal = new bootstrap.Modal("#myModal");
         if(isState==="success"){
         myModal.show();
         }
     </script>
+    </th:block>
 </div>
 </html>

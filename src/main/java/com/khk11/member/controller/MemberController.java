@@ -18,6 +18,7 @@ public class MemberController {
 
     @GetMapping("/signup")
     public String signup(){
+
         return null;
     }
 }
