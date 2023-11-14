@@ -9,6 +9,7 @@
 
     <form method="post" action="" th:action="@{/board/modify(currentPage=${param.currentPage})}" th:object="${boardDto}">
 
+
         <div class="mb-3">
             <label for="exampleFormControlInput1" class="form-label">title</label>
             <input type="text" class="form-control" id="title" name="title" placeholder="제목" th:field="*{title}">

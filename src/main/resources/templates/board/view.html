@@ -4,27 +4,28 @@
       layout:decorate="~{layout/layout}"
 >
 <div layout:fragment="content" class="main">
-    <form method="get" action="" th:action="@{/board/write}" th:object="${boardDto}">
-        <div class="mb-3">
-            <label for="exampleFormControlInput1" class="form-label">title</label>
-            <input type="text" class="form-control" id="title" name="title" placeholder="제목" value="">
-          <!-- // <p th:if="${#fields.hasErrors('title')}" th:errors="*{title}" th:v>오류메세지</p>-->
-        </div>
-        <div class="mb-3">
-            <label for="exampleFormControlTextarea1" class="form-label">name</label>
-            <input type="text" class="form-control"  ></input>
-         <!--   <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="error">오류</p>-->
-        </div>
-        <div class="mb-3">
-            <label for="exampleFormControlTextarea1" class="form-label">content</label>
-            <textarea type="text" class="form-control" id="content" name="content" rows="5"></textarea>
-           <!-- <p th:if="${#fields.hasErrors('content')}" th:errors="*{content}" class="error">오류</p>-->
-        </div>
-        <div class="mt-5">
-            <button class="btn btn-primary"> 확인 </button>
-        </div>
-    </form>
-
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">no</th>
+            <th scope="col">제목</th>
+            <th scope="col">이름</th>
+            <th scope="col">내용</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr >
+            <td th:text="${boardDto.id}">Otto</td>
+            <td th:text="${boardDto.title}">Otto</td>
+            <td th:text="${boardDto.name}">@mdo</td>
+            <td th:text="${boardDto.content}">@mdo</td>
+        </tr>
+        </tbody>
+    </table>
+    <div>
+        <a class="btn btn-danger" th:href="@{/board/modify/{id}(id=${boardDto.id})}">수정</a>
+        <a class="btn btn-danger" th:href="@{/board/delete/{id}(id=${boardDto.id})}">삭제</a>
+    </div>
 
 </div>
 </html>
