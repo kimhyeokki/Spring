@@ -17,7 +17,7 @@
         <input type="text" class="form-control" th:field="*{name}" ></input>
         <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="error">오류</p>
     </div>
-        <div class="mb-3">
+        <div class="mb-3" id="">
             <label for="exampleFormControlTextarea1" class="form-label">content</label>
             <textarea type="text" class="form-control" id="content" name="content" rows="5"></textarea>
             <p th:if="${#fields.hasErrors('content')}" th:errors="*{content}" class="error">오류</p>
@@ -26,5 +26,13 @@
             <button class="btn btn-primary"> 확인 </button>
         </div>
     </form>
+<script src="https://cdn.ckeditor.com/ckeditor5/40.0.0/classic/ckeditor.js"></script>
+<script>
+    ClassicEditor
+        .create( document.querySelector( "#content" ) )
+        .catch( error => {
+            console.error( error );
+        } );
+</script>
 </div>
 </html>
