@@ -1,0 +1,40 @@
+server:
+  port: 8091
+
+spring:
+  output:
+    ansi:
+      enabled: always
+  devtools:
+    livereload:
+      enabled: true
+    restart:
+      enabled: true
+    thymeleaf:
+      cache: false
+
+  #### database ??
+  datasource:
+    driver-class-name: oracle.jdbc.driver.OracleDriver
+    url: jdbc:oracle:thin:@localhost:1521:xe
+    username: kimhk11
+    password: 1234
+
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 100MB
+
+mybatis:
+  config-location: classpath:mapper/config/config.xml
+  mapper-locations: classpath:mapper/sql/**/*.xml
+    #type-aliases-package: com.khk11.gallery.dto
+
+file:
+  path: C:/upload/
+
+
+ ## mvc:
+ #   view:
+  #    prefix: /WEB-INF/views
+ #     suffix: .jsp
